@@ -7,18 +7,18 @@ object runBlocking {
     @JvmStatic
     fun main(args: Array<String>) {
         println("========================start========================")
-        this.main()
+        this.main() // runBlocking으로 인해 대기한다.
         println("=========================end=========================")
     }
 
-    fun main() = runBlocking { // this: CoroutineScope
-        // 코루틴 블록
-        launch { // launch a new coroutine and continue
-            delay(1000L) // non-blocking delay for 1 second (default time unit is ms)
-            println("World!") // print after delay
+    fun main() = runBlocking { // 호출한 스레드에서 그대로 코루틴을 수행한다.
+        // 자식 코루틴
+        launch {
+            delay(1000L)
+            println("launch() is running on ${Thread.currentThread().name}") // main
         }
 
-        // 코루틴 x
-        println("Hello") // main coroutine continues while a previous one is delayed
+        // 코루틴
+        println("runBlocking is running on ${Thread.currentThread().name}") // main
     }
 }
